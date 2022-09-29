@@ -21,26 +21,38 @@ class CircularSeekBar extends StatefulWidget {
   final Curve curves;
   final VoidCallback? onEnd;
   final bool interactive;
+  final double innerThumbRadius;
+  final double innerThumbStrokeWidth;
+  final Color innerThumbColor;
+  final double outerThumbRadius;
+  final double outerThumbStrokeWidth;
+  final Color outerThumbColor;
 
-  const CircularSeekBar(
-      {Key? key,
-        required this.width,
-        required this.height,
-        this.progress = 0,
-        this.minProgress = 0,
-        this.maxProgress = 100,
-        this.startAngle = 0,
-        this.sweepAngle = 360,
-        this.barWidth = 10,
-        this.trackColor = Colors.white54,
-        this.progressColor = Colors.blue,
-        this.strokeCap = StrokeCap.round,
-        this.animation = true,
-        this.animDurationMillis = 1000,
-        this.curves = Curves.linear,
-        this.onEnd,
-        this.interactive = true})
-      : super(key: key);
+  const CircularSeekBar({
+    Key? key,
+    required this.width,
+    required this.height,
+    this.progress = 0,
+    this.minProgress = 0,
+    this.maxProgress = 100,
+    this.startAngle = 0,
+    this.sweepAngle = 360,
+    this.barWidth = 10,
+    this.trackColor = Colors.white54,
+    this.progressColor = Colors.blue,
+    this.strokeCap = StrokeCap.round,
+    this.animation = true,
+    this.animDurationMillis = 1000,
+    this.curves = Curves.linear,
+    this.onEnd,
+    this.interactive = true,
+    this.innerThumbRadius = 5,
+    this.innerThumbStrokeWidth = 3,
+    this.innerThumbColor = Colors.white,
+    this.outerThumbRadius = 5,
+    this.outerThumbStrokeWidth = 10,
+    this.outerThumbColor = Colors.blueAccent,
+  }) : super(key: key);
 
   @override
   State<CircularSeekBar> createState() => _CircularSeekBarState();
@@ -115,6 +127,12 @@ class _CircularSeekBarState extends State<CircularSeekBar> {
                   progressColor: widget.progressColor,
                   strokeCap: widget.strokeCap,
                   interactive: widget.interactive,
+                  innerThumbRadius: widget.innerThumbRadius,
+                  innerThumbStrokeWidth: widget.innerThumbStrokeWidth,
+                  innerThumbColor: widget.innerThumbColor,
+                  outerThumbRadius: widget.outerThumbRadius,
+                  outerThumbStrokeWidth: widget.outerThumbStrokeWidth,
+                  outerThumbColor: widget.outerThumbColor,
                 ),
               );
             }),
@@ -133,6 +151,12 @@ class _CircularSeekBarState extends State<CircularSeekBar> {
           progressColor: widget.progressColor,
           strokeCap: widget.strokeCap,
           interactive: widget.interactive,
+          innerThumbRadius: widget.innerThumbRadius,
+          innerThumbStrokeWidth: widget.innerThumbStrokeWidth,
+          innerThumbColor: widget.innerThumbColor,
+          outerThumbRadius: widget.outerThumbRadius,
+          outerThumbStrokeWidth: widget.outerThumbStrokeWidth,
+          outerThumbColor: widget.outerThumbColor,
         ),
       );
     }
@@ -150,6 +174,12 @@ class _SeekBarPainter extends CustomPainter {
   final Color progressColor;
   final StrokeCap strokeCap;
   final bool interactive;
+  final double innerThumbRadius;
+  final double innerThumbStrokeWidth;
+  final Color innerThumbColor;
+  final double outerThumbRadius;
+  final double outerThumbStrokeWidth;
+  final Color outerThumbColor;
 
   // The initial rotational offset 90
   static const double angleOffset = 90;
@@ -165,6 +195,12 @@ class _SeekBarPainter extends CustomPainter {
     required this.progressColor,
     required this.strokeCap,
     required this.interactive,
+    required this.innerThumbRadius,
+    required this.innerThumbStrokeWidth,
+    required this.innerThumbColor,
+    required this.outerThumbRadius,
+    required this.outerThumbStrokeWidth,
+    required this.outerThumbColor,
   });
 
   @override
@@ -182,7 +218,8 @@ class _SeekBarPainter extends CustomPainter {
       ..strokeWidth = barWidth;
 
     final Offset center = Offset(size.width / 2, size.height / 2);
-    final double radius = min(center.dx, center.dy) - barWidth;
+    final double largerThumbWidth = barWidth >= (outerThumbRadius + (outerThumbStrokeWidth / 2)) ? barWidth : (outerThumbRadius + (outerThumbStrokeWidth / 2));
+    final double radius = min(center.dx, center.dy) - largerThumbWidth;
     double realStartAngle = startAngle + angleOffset;
 
     double startAngleRadian = _degreesToRadians(realStartAngle);
@@ -195,6 +232,29 @@ class _SeekBarPainter extends CustomPainter {
     double progressAngleRadian = _degreesToRadians(progressAngle);
 
     canvas.drawArc(rect, startAngleRadian, progressAngleRadian, false, progressPaint);
+
+    double thumbX = center.dx - sin(_degreesToRadians(startAngle + progressAngle)) * radius;
+    double thumbY = center.dy + cos(_degreesToRadians(startAngle + progressAngle)) * radius;
+
+    Offset thumbCenter = Offset(thumbX, thumbY);
+
+    canvas.drawCircle(
+        thumbCenter,
+        outerThumbRadius,
+        Paint()
+          ..color = outerThumbColor
+          ..style = PaintingStyle.stroke
+          ..strokeCap = StrokeCap.round
+          ..strokeWidth = outerThumbStrokeWidth);
+
+    canvas.drawCircle(
+        thumbCenter,
+        innerThumbRadius,
+        Paint()
+          ..color = innerThumbColor
+          ..style = PaintingStyle.fill
+          ..strokeCap = StrokeCap.round
+          ..strokeWidth = innerThumbStrokeWidth);
   }
 
   @override
@@ -208,7 +268,13 @@ class _SeekBarPainter extends CustomPainter {
         oldDelegate.trackColor != trackColor ||
         oldDelegate.progressColor != progressColor ||
         oldDelegate.strokeCap != strokeCap ||
-        oldDelegate.interactive != interactive;
+        oldDelegate.interactive != interactive ||
+        oldDelegate.innerThumbRadius != innerThumbRadius ||
+        oldDelegate.innerThumbStrokeWidth != innerThumbStrokeWidth ||
+        oldDelegate.innerThumbColor != innerThumbColor ||
+        oldDelegate.outerThumbRadius != outerThumbRadius ||
+        oldDelegate.outerThumbStrokeWidth != outerThumbStrokeWidth ||
+        oldDelegate.outerThumbColor != outerThumbColor;
   }
 
   double _lerp(double from, double to, double ratio) {
