@@ -1,3 +1,4 @@
+import 'package:circular_seek_bar/circular_seek_bar.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -12,7 +13,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter circular_seek_bar example',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primaryColor: Colors.blue,
+        brightness: Brightness.dark,
       ),
       home: const CircularSeekBarExamplePage(),
     );
@@ -27,7 +29,6 @@ class CircularSeekBarExamplePage extends StatefulWidget {
 }
 
 class _CircularSeekBarExamplePageState extends State<CircularSeekBarExamplePage> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,8 +37,18 @@ class _CircularSeekBarExamplePageState extends State<CircularSeekBarExamplePage>
       ),
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: const <Widget>[
+            CircularSeekBar(
+              width: double.infinity,
+              progress: 40,
+              height: 300,
+              startAngle: 90,
+              sweepAngle: 180,
+            ),
+            SizedBox(
+              height: 40,
+            ),
           ],
         ),
       ),
