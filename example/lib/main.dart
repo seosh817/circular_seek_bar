@@ -45,6 +45,7 @@ class _CircularSeekBarExamplePageState extends State<CircularSeekBarExamplePage>
               height: 300,
               startAngle: 90,
               sweepAngle: 180,
+              progressGradientColors: [Colors.red, Colors.orange, Colors.yellow, Colors.green, Colors.blue, Colors.indigo, Colors.purple],
             ),
             SizedBox(
               height: 40,

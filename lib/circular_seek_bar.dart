@@ -14,7 +14,9 @@ class CircularSeekBar extends StatefulWidget {
   final double sweepAngle;
   final double barWidth;
   final Color trackColor;
+  final List<Color> trackGradientColors;
   final Color progressColor;
+  final List<Color> progressGradientColors;
   final StrokeCap strokeCap;
   final bool animation;
   final int animDurationMillis;
@@ -39,7 +41,9 @@ class CircularSeekBar extends StatefulWidget {
     this.sweepAngle = 360,
     this.barWidth = 10,
     this.trackColor = Colors.white54,
+    this.trackGradientColors = const [],
     this.progressColor = Colors.blue,
+    this.progressGradientColors = const [],
     this.strokeCap = StrokeCap.round,
     this.animation = true,
     this.animDurationMillis = 1000,
@@ -79,7 +83,6 @@ class _CircularSeekBarState extends State<CircularSeekBar> {
     if (progress >= widget.minProgress && progress <= widget.maxProgress) {
       setState(() {
         _progress = _angleToProgress(angle > 0 ? angle : angle + 360, widget.startAngle, widget.sweepAngle);
-        // print('_progress: $_progress');
       });
     }
   }
@@ -124,7 +127,9 @@ class _CircularSeekBarState extends State<CircularSeekBar> {
                   sweepAngle: widget.sweepAngle,
                   barWidth: widget.barWidth,
                   trackColor: widget.trackColor,
+                  trackGradientColors: widget.trackGradientColors,
                   progressColor: widget.progressColor,
+                  progressGradientColors: widget.progressGradientColors,
                   strokeCap: widget.strokeCap,
                   interactive: widget.interactive,
                   innerThumbRadius: widget.innerThumbRadius,
@@ -148,7 +153,9 @@ class _CircularSeekBarState extends State<CircularSeekBar> {
           sweepAngle: widget.sweepAngle,
           barWidth: widget.barWidth,
           trackColor: widget.trackColor,
+          trackGradientColors: widget.trackGradientColors,
           progressColor: widget.progressColor,
+          progressGradientColors: widget.progressGradientColors,
           strokeCap: widget.strokeCap,
           interactive: widget.interactive,
           innerThumbRadius: widget.innerThumbRadius,
@@ -171,7 +178,9 @@ class _SeekBarPainter extends CustomPainter {
   final double sweepAngle;
   final double barWidth;
   final Color trackColor;
+  final List<Color> trackGradientColors;
   final Color progressColor;
+  final List<Color> progressGradientColors;
   final StrokeCap strokeCap;
   final bool interactive;
   final double innerThumbRadius;
@@ -192,7 +201,9 @@ class _SeekBarPainter extends CustomPainter {
     required this.sweepAngle,
     required this.barWidth,
     required this.trackColor,
+    required this.trackGradientColors,
     required this.progressColor,
+    required this.progressGradientColors,
     required this.strokeCap,
     required this.interactive,
     required this.innerThumbRadius,
@@ -226,6 +237,31 @@ class _SeekBarPainter extends CustomPainter {
     Rect rect = Rect.fromCenter(center: center, width: 2 * radius, height: 2 * radius);
 
     double sweepAngleRadian = _degreesToRadians(sweepAngle);
+
+    Gradient? trackGradient = trackGradientColors.isNotEmpty
+        ? SweepGradient(
+            center: Alignment.center,
+            startAngle: startAngleRadian,
+            endAngle: startAngleRadian + sweepAngleRadian,
+            tileMode: TileMode.mirror,
+            colors: trackGradientColors,
+          )
+        : null;
+
+    trackPaint.shader = trackGradient?.createShader(rect);
+
+    Gradient? progressGradient = progressGradientColors.isNotEmpty
+        ? SweepGradient(
+            center: Alignment.center,
+            startAngle: startAngleRadian,
+            endAngle: startAngleRadian + sweepAngleRadian,
+            tileMode: TileMode.mirror,
+            colors: progressGradientColors,
+          )
+        : null;
+
+    progressPaint.shader = progressGradient?.createShader(rect);
+
     canvas.drawArc(rect, startAngleRadian, sweepAngleRadian, false, trackPaint);
 
     double progressAngle = _lerp(0, sweepAngle, _lerpRatio(minProgress, maxProgress, progress));
@@ -266,7 +302,9 @@ class _SeekBarPainter extends CustomPainter {
         oldDelegate.sweepAngle != sweepAngle ||
         oldDelegate.barWidth != barWidth ||
         oldDelegate.trackColor != trackColor ||
+        oldDelegate.trackGradientColors != trackGradientColors ||
         oldDelegate.progressColor != progressColor ||
+        oldDelegate.progressGradientColors != progressGradientColors ||
         oldDelegate.strokeCap != strokeCap ||
         oldDelegate.interactive != interactive ||
         oldDelegate.innerThumbRadius != innerThumbRadius ||
