@@ -1,0 +1,29 @@
+name: main_workflow
+
+on:
+  push:
+    branches:
+      - master
+      - develop
+      - 'release/**'
+    tags:
+      - v*
+  pull_request:
+    branches:
+      - '*'
+
+
+jobs:
+  flutter_analyze:
+    name: Run flutter analyze
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.0.0'
+          channel: 'stable'
+      - run: flutter --version
+      - run: flutter pub get
+      - run: flutter analyze
+      - run: flutter test
