@@ -92,7 +92,7 @@ class _CircularSeekBarState extends State<CircularSeekBar> {
   }
 
   double _angleToProgress(double angle, double startAngle, double sweepAngle) {
-    double relativeAngle = (angle - startAngle) >= 0 ? (angle - startAngle) : (startAngle + sweepAngle + angle);
+    double relativeAngle = (angle - startAngle) >= 0 ? (angle - startAngle) : (startAngle - sweepAngle + angle);
     return (relativeAngle / sweepAngle) * 100;
   }
 
