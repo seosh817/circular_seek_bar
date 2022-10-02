@@ -273,14 +273,6 @@ class _SeekBarPainter extends CustomPainter {
 
     progressPaint.shader = progressGradient?.createShader(rect);
 
-    canvas.drawArc(rect, startAngleRadian, sweepAngleRadian, false, trackPaint);
-
-    double progressAngle = _lerp(0, sweepAngle, _lerpRatio(minProgress, maxProgress, progress));
-    double progressAngleRadian = _degreesToRadians(progressAngle);
-
-    canvas.drawArc(rect, startAngleRadian, progressAngleRadian, false, progressPaint);
-
-
     if (dashWidth > 0 && dashGap > 0) {
       double dashSum = dashWidth + dashGap;
       double dashWidthRadian = _degreesToRadians(dashWidth);
@@ -319,30 +311,66 @@ class _SeekBarPainter extends CustomPainter {
         false,
         progressPaint,
       );
+
+
+      double totalTrackDashWidth = dashWidth * trackDashCounts;
+      double totalRatio = _lerpRatio(minProgress, maxProgress, progress);
+      double totalFilledAngleRatio = (dashWidth * progressDashCounts) / totalTrackDashWidth.toDouble();
+      double totalNotFilledAngleRatio = totalRatio - totalFilledAngleRatio;
+      double notFilledAngleRatio = totalNotFilledAngleRatio * trackDashCounts;
+      double progressAngle = dashSum * progressDashCounts + _lerp(0, dashWidth, notFilledAngleRatio);
+
+      double thumbX = center.dx - sin(_degreesToRadians(startAngle + progressAngle)) * radius;
+      double thumbY = center.dy + cos(_degreesToRadians(startAngle + progressAngle)) * radius;
+      Offset thumbCenter = Offset(thumbX, thumbY);
+
+      canvas.drawCircle(
+          thumbCenter,
+          outerThumbRadius,
+          Paint()
+            ..color = outerThumbColor
+            ..style = PaintingStyle.stroke
+            ..strokeCap = StrokeCap.round
+            ..strokeWidth = outerThumbStrokeWidth);
+
+      canvas.drawCircle(
+          thumbCenter,
+          innerThumbRadius,
+          Paint()
+            ..color = innerThumbColor
+            ..style = PaintingStyle.fill
+            ..strokeCap = StrokeCap.round
+            ..strokeWidth = innerThumbStrokeWidth);
+    } else {
+      double progressAngle = _lerp(0, sweepAngle, _lerpRatio(minProgress, maxProgress, progress));
+      double progressAngleRadian = _degreesToRadians(progressAngle);
+
+      canvas.drawArc(rect, startAngleRadian, sweepAngleRadian, false, trackPaint);
+      canvas.drawArc(rect, startAngleRadian, progressAngleRadian, false, progressPaint);
+
+      double thumbX = center.dx - sin(_degreesToRadians(startAngle + progressAngle)) * radius;
+      double thumbY = center.dy + cos(_degreesToRadians(startAngle + progressAngle)) * radius;
+
+      Offset thumbCenter = Offset(thumbX, thumbY);
+
+      canvas.drawCircle(
+          thumbCenter,
+          outerThumbRadius,
+          Paint()
+            ..color = outerThumbColor
+            ..style = PaintingStyle.stroke
+            ..strokeCap = StrokeCap.round
+            ..strokeWidth = outerThumbStrokeWidth);
+
+      canvas.drawCircle(
+          thumbCenter,
+          innerThumbRadius,
+          Paint()
+            ..color = innerThumbColor
+            ..style = PaintingStyle.fill
+            ..strokeCap = StrokeCap.round
+            ..strokeWidth = innerThumbStrokeWidth);
     }
-
-    double thumbX = center.dx - sin(_degreesToRadians(startAngle + progressAngle)) * radius;
-    double thumbY = center.dy + cos(_degreesToRadians(startAngle + progressAngle)) * radius;
-
-    Offset thumbCenter = Offset(thumbX, thumbY);
-
-    canvas.drawCircle(
-        thumbCenter,
-        outerThumbRadius,
-        Paint()
-          ..color = outerThumbColor
-          ..style = PaintingStyle.stroke
-          ..strokeCap = StrokeCap.round
-          ..strokeWidth = outerThumbStrokeWidth);
-
-    canvas.drawCircle(
-        thumbCenter,
-        innerThumbRadius,
-        Paint()
-          ..color = innerThumbColor
-          ..style = PaintingStyle.fill
-          ..strokeCap = StrokeCap.round
-          ..strokeWidth = innerThumbStrokeWidth);
   }
 
   @override
