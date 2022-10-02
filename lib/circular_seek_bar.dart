@@ -29,6 +29,8 @@ class CircularSeekBar extends StatefulWidget {
   final double outerThumbRadius;
   final double outerThumbStrokeWidth;
   final Color outerThumbColor;
+  final double dashWidth;
+  final double dashGap;
 
   const CircularSeekBar({
     Key? key,
@@ -56,6 +58,8 @@ class CircularSeekBar extends StatefulWidget {
     this.outerThumbRadius = 5,
     this.outerThumbStrokeWidth = 10,
     this.outerThumbColor = Colors.blueAccent,
+    this.dashGap = 0,
+    this.dashWidth = 0,
   }) : super(key: key);
 
   @override
@@ -138,6 +142,8 @@ class _CircularSeekBarState extends State<CircularSeekBar> {
                   outerThumbRadius: widget.outerThumbRadius,
                   outerThumbStrokeWidth: widget.outerThumbStrokeWidth,
                   outerThumbColor: widget.outerThumbColor,
+                  dashWidth: widget.dashWidth,
+                  dashGap: widget.dashGap,
                 ),
               );
             }),
@@ -164,6 +170,8 @@ class _CircularSeekBarState extends State<CircularSeekBar> {
           outerThumbRadius: widget.outerThumbRadius,
           outerThumbStrokeWidth: widget.outerThumbStrokeWidth,
           outerThumbColor: widget.outerThumbColor,
+          dashWidth: widget.dashWidth,
+          dashGap: widget.dashGap,
         ),
       );
     }
@@ -189,30 +197,33 @@ class _SeekBarPainter extends CustomPainter {
   final double outerThumbRadius;
   final double outerThumbStrokeWidth;
   final Color outerThumbColor;
+  final double dashWidth;
+  final double dashGap;
 
   // The initial rotational offset 90
   static const double angleOffset = 90;
 
-  _SeekBarPainter({
-    required this.progress,
-    required this.minProgress,
-    required this.maxProgress,
-    required this.startAngle,
-    required this.sweepAngle,
-    required this.barWidth,
-    required this.trackColor,
-    required this.trackGradientColors,
-    required this.progressColor,
-    required this.progressGradientColors,
-    required this.strokeCap,
-    required this.interactive,
-    required this.innerThumbRadius,
-    required this.innerThumbStrokeWidth,
-    required this.innerThumbColor,
-    required this.outerThumbRadius,
-    required this.outerThumbStrokeWidth,
-    required this.outerThumbColor,
-  });
+  _SeekBarPainter(
+      {required this.progress,
+      required this.minProgress,
+      required this.maxProgress,
+      required this.startAngle,
+      required this.sweepAngle,
+      required this.barWidth,
+      required this.trackColor,
+      required this.trackGradientColors,
+      required this.progressColor,
+      required this.progressGradientColors,
+      required this.strokeCap,
+      required this.interactive,
+      required this.innerThumbRadius,
+      required this.innerThumbStrokeWidth,
+      required this.innerThumbColor,
+      required this.outerThumbRadius,
+      required this.outerThumbStrokeWidth,
+      required this.outerThumbColor,
+      required this.dashWidth,
+      required this.dashGap});
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -269,6 +280,47 @@ class _SeekBarPainter extends CustomPainter {
 
     canvas.drawArc(rect, startAngleRadian, progressAngleRadian, false, progressPaint);
 
+
+    if (dashWidth > 0 && dashGap > 0) {
+      double dashSum = dashWidth + dashGap;
+      double dashWidthRadian = _degreesToRadians(dashWidth);
+      double dashSumRadian = _degreesToRadians(dashSum);
+
+      int trackDashCounts = sweepAngle >= (sweepAngle ~/ dashSum) * dashSum + dashWidth ? (sweepAngle ~/ dashSum) + 1 : (sweepAngle ~/ dashSum);
+      int progressDashCounts = (trackDashCounts * _lerpRatio(minProgress, maxProgress, progress)).floor();
+      double fullProgressRatio = (progressDashCounts / trackDashCounts.toDouble());
+
+      // Draw track dashes.
+      for (int i = 0; i < trackDashCounts; i++) {
+        canvas.drawArc(
+          rect,
+          startAngleRadian + dashSumRadian * i,
+          dashWidthRadian,
+          false,
+          trackPaint,
+        );
+      }
+
+      // Draw progress dashes.
+      for (int i = 0; i < progressDashCounts; i++) {
+        canvas.drawArc(
+          rect,
+          startAngleRadian + dashSumRadian * i,
+          dashWidthRadian,
+          false,
+          progressPaint,
+        );
+      }
+
+      canvas.drawArc(
+        rect,
+        startAngleRadian + dashSumRadian * (progressDashCounts),
+        dashWidthRadian * (_lerpRatio(minProgress, maxProgress, progress) - fullProgressRatio) * trackDashCounts,
+        false,
+        progressPaint,
+      );
+    }
+
     double thumbX = center.dx - sin(_degreesToRadians(startAngle + progressAngle)) * radius;
     double thumbY = center.dy + cos(_degreesToRadians(startAngle + progressAngle)) * radius;
 
@@ -312,16 +364,18 @@ class _SeekBarPainter extends CustomPainter {
         oldDelegate.innerThumbColor != innerThumbColor ||
         oldDelegate.outerThumbRadius != outerThumbRadius ||
         oldDelegate.outerThumbStrokeWidth != outerThumbStrokeWidth ||
-        oldDelegate.outerThumbColor != outerThumbColor;
+        oldDelegate.outerThumbColor != outerThumbColor ||
+        oldDelegate.dashWidth != dashWidth ||
+        oldDelegate.dashGap != dashGap;
   }
+}
 
-  double _lerp(double from, double to, double ratio) {
-    return from + (to - from) * ratio;
-  }
+double _lerp(double from, double to, double ratio) {
+  return from + (to - from) * ratio;
+}
 
-  double _lerpRatio(double from, double to, double progress) {
-    return progress / (from + to);
-  }
+double _lerpRatio(double from, double to, double progress) {
+  return progress / (from + to);
 }
 
 double _degreesToRadians(double angle) => angle * pi / 180.0;
