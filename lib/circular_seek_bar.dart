@@ -268,34 +268,35 @@ class _SeekBarPainter extends CustomPainter {
     final double radius = min(center.dx, center.dy) - largerThumbWidth;
     double realStartAngle = startAngle + angleOffset;
 
-    double startAngleRadian = _degreesToRadians(realStartAngle);
+    double startAngleWithOffsetRadian = _degreesToRadians(realStartAngle);
     Rect rect = Rect.fromCenter(center: center, width: 2 * radius, height: 2 * radius);
 
     double sweepAngleRadian = _degreesToRadians(sweepAngle);
 
-    Gradient? trackGradient = trackGradientColors.isNotEmpty
-        ? SweepGradient(
-            center: Alignment.center,
-            startAngle: startAngleRadian,
-            endAngle: startAngleRadian + sweepAngleRadian,
-            tileMode: TileMode.mirror,
-            colors: trackGradientColors,
-          )
-        : null;
+    if (trackGradientColors.isNotEmpty) {
+      Gradient trackGradient = SweepGradient(
+        center: Alignment.center,
+        startAngle: 0,
+        endAngle: sweepAngleRadian,
+        tileMode: TileMode.mirror,
+        colors: trackGradientColors,
+        transform: GradientRotation(startAngleWithOffsetRadian - 0.1),
+      );
+      trackPaint.shader = trackGradient.createShader(rect);
+    }
 
-    trackPaint.shader = trackGradient?.createShader(rect);
+    if (progressGradientColors.isNotEmpty) {
+      Gradient progressGradient = SweepGradient(
+        center: Alignment.center,
+        startAngle: 0,
+        endAngle: sweepAngleRadian,
+        tileMode: TileMode.mirror,
+        colors: progressGradientColors,
+        transform: GradientRotation(startAngleWithOffsetRadian - 0.1),
+      );
 
-    Gradient? progressGradient = progressGradientColors.isNotEmpty
-        ? SweepGradient(
-            center: Alignment.center,
-            startAngle: startAngleRadian,
-            endAngle: startAngleRadian + sweepAngleRadian,
-            tileMode: TileMode.mirror,
-            colors: progressGradientColors,
-          )
-        : null;
-
-    progressPaint.shader = progressGradient?.createShader(rect);
+      progressPaint.shader = progressGradient.createShader(rect);
+    }
 
     if (dashWidth > 0 && dashGap > 0) {
       double dashSum = dashWidth + dashGap;
@@ -310,7 +311,7 @@ class _SeekBarPainter extends CustomPainter {
       for (int i = 0; i < trackDashCounts; i++) {
         canvas.drawArc(
           rect,
-          startAngleRadian + dashSumRadian * i,
+          startAngleWithOffsetRadian + dashSumRadian * i,
           dashWidthRadian,
           false,
           trackPaint,
@@ -321,7 +322,7 @@ class _SeekBarPainter extends CustomPainter {
       for (int i = 0; i < progressDashCounts; i++) {
         canvas.drawArc(
           rect,
-          startAngleRadian + dashSumRadian * i,
+          startAngleWithOffsetRadian + dashSumRadian * i,
           dashWidthRadian,
           false,
           progressPaint,
@@ -330,7 +331,7 @@ class _SeekBarPainter extends CustomPainter {
 
       canvas.drawArc(
         rect,
-        startAngleRadian + dashSumRadian * (progressDashCounts),
+        startAngleWithOffsetRadian + dashSumRadian * (progressDashCounts),
         dashWidthRadian * (_lerpRatio(minProgress, maxProgress, progress) - fullProgressRatio) * trackDashCounts,
         false,
         progressPaint,
@@ -369,8 +370,8 @@ class _SeekBarPainter extends CustomPainter {
       double progressAngle = _lerp(0, sweepAngle, _lerpRatio(minProgress, maxProgress, progress));
       double progressAngleRadian = _degreesToRadians(progressAngle);
 
-      canvas.drawArc(rect, startAngleRadian, sweepAngleRadian, false, trackPaint);
-      canvas.drawArc(rect, startAngleRadian, progressAngleRadian, false, progressPaint);
+      canvas.drawArc(rect, startAngleWithOffsetRadian, sweepAngleRadian, false, trackPaint);
+      canvas.drawArc(rect, startAngleWithOffsetRadian, progressAngleRadian, false, progressPaint);
 
       double thumbX = center.dx - sin(_degreesToRadians(startAngle + progressAngle)) * radius;
       double thumbY = center.dy + cos(_degreesToRadians(startAngle + progressAngle)) * radius;
