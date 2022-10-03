@@ -70,6 +70,20 @@ class _CircularSeekBarState extends State<CircularSeekBar> {
   double? _progress;
   final GlobalKey _key = GlobalKey();
 
+  @override
+  void initState() {
+    super.initState();
+    _progress = widget.progress;
+  }
+
+  @override
+  void didUpdateWidget(CircularSeekBar oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.progress != widget.progress) {
+      _progress = widget.progress;
+    }
+  }
+
   Size _getSize(GlobalKey key) {
     final RenderBox renderBox = key.currentContext!.findRenderObject() as RenderBox;
     Size size = renderBox.size;
@@ -141,14 +155,14 @@ class _CircularSeekBarState extends State<CircularSeekBar> {
         },
         child: TweenAnimationBuilder(
             duration: Duration(milliseconds: widget.animDurationMillis),
-            tween: Tween(begin: widget.minProgress, end: widget.progress),
+            tween: Tween(begin: widget.minProgress, end: _progress!),
             curve: widget.curves,
             onEnd: widget.onEnd,
             builder: (BuildContext context, double progress, __) {
               return CustomPaint(
                 size: Size(widget.width, widget.height),
                 painter: _SeekBarPainter(
-                  progress: _progress ?? progress,
+                  progress: _progress!,
                   minProgress: widget.minProgress,
                   maxProgress: widget.maxProgress,
                   startAngle: widget.startAngle,
@@ -176,7 +190,7 @@ class _CircularSeekBarState extends State<CircularSeekBar> {
       return CustomPaint(
         size: Size(widget.width, widget.height),
         painter: _SeekBarPainter(
-          progress: widget.progress,
+          progress: _progress!,
           minProgress: widget.minProgress,
           maxProgress: widget.maxProgress,
           startAngle: widget.startAngle,
