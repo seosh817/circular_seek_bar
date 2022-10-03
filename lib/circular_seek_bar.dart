@@ -83,10 +83,10 @@ class _CircularSeekBarState extends State<CircularSeekBar> {
     double centerX = size.width / 2.0;
     double centerY = size.height / 2.0;
     double angle = _getTouchDegrees(centerX, dx, centerY, dy);
-    double progress = _angleToProgress(angle > 0 ? angle : angle + 360, widget.startAngle, widget.sweepAngle);
+    double progress = (widget.dashWidth > 0 && widget.dashGap > 0) ? _angleToDashedProgress(angle > 0 ? angle : angle + 360, widget.startAngle, widget.sweepAngle, widget.dashWidth, widget.dashGap) : _angleToProgress(angle > 0 ? angle : angle + 360, widget.startAngle, widget.sweepAngle);
     if (progress >= widget.minProgress && progress <= widget.maxProgress) {
       setState(() {
-        _progress = _angleToProgress(angle > 0 ? angle : angle + 360, widget.startAngle, widget.sweepAngle);
+        _progress = progress;
       });
     }
   }
@@ -102,6 +102,26 @@ class _CircularSeekBarState extends State<CircularSeekBar> {
   double _angleToProgress(double angle, double startAngle, double sweepAngle) {
     double relativeAngle = _getRelativeAngle(angle, startAngle);
     return (relativeAngle / sweepAngle) * 100;
+  }
+
+  double _angleToDashedProgress(double angle, double startAngle, double sweepAngle, double dashWidth, double dashGap) {
+    double relativeAngle = (angle - startAngle) >= 0 ? (angle - startAngle) : (360 - startAngle + angle);
+    double dashSum = dashWidth + dashGap;
+
+    int trackDashCounts = sweepAngle >= (sweepAngle ~/ dashSum) * dashSum + dashWidth ? (sweepAngle ~/ dashSum) + 1 : (sweepAngle ~/ dashSum);
+    double totalTrackDashWidth = dashWidth * trackDashCounts;
+
+    for (int i = 0; i <= trackDashCounts; i++) {
+      double relativeDashStartAngle = dashSum * i;
+      double relativeDashEndAngle = (relativeDashStartAngle + dashWidth) % 360;
+
+      if (relativeAngle >= relativeDashStartAngle && relativeAngle <= relativeDashEndAngle) {
+        double totalFilledDashRatio = (dashWidth * i) / totalTrackDashWidth.toDouble();
+        double totalNotFilledDashRatio = ((relativeAngle - dashSum * i) / dashWidth.toDouble()) / trackDashCounts;
+        return _lerp(widget.minProgress, widget.maxProgress, totalFilledDashRatio + totalNotFilledDashRatio);
+      }
+    }
+    return -1;
   }
 
   @override
