@@ -91,12 +91,16 @@ class _CircularSeekBarState extends State<CircularSeekBar> {
     }
   }
 
+  double _getRelativeAngle(double angle, double startAngle) {
+    return (angle - startAngle) >= 0 ? (angle - startAngle) : (360 - startAngle + angle);
+  }
+
   double _getTouchDegrees(double centerX, double dx, double centerY, double dy) {
     return _radiansToDegrees(atan2(centerX - dx, dy - centerY));
   }
 
   double _angleToProgress(double angle, double startAngle, double sweepAngle) {
-    double relativeAngle = (angle - startAngle) >= 0 ? (angle - startAngle) : (startAngle - sweepAngle + angle);
+    double relativeAngle = _getRelativeAngle(angle, startAngle);
     return (relativeAngle / sweepAngle) * 100;
   }
 
