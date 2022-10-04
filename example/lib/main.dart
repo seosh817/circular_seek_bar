@@ -30,6 +30,8 @@ class CircularSeekBarExamplePage extends StatefulWidget {
 }
 
 class _CircularSeekBarExamplePageState extends State<CircularSeekBarExamplePage> {
+  final ValueNotifier<double> _valueNotifier = ValueNotifier(0);
+
   double _progress = 50;
   double _startAngle = 90;
   double _sweepAngle = 180;
@@ -41,6 +43,11 @@ class _CircularSeekBarExamplePageState extends State<CircularSeekBarExamplePage>
   bool _animation = true;
   bool _thumbVisible = true;
 
+  @override
+  void dispose() {
+    _valueNotifier.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -68,6 +75,25 @@ class _CircularSeekBarExamplePageState extends State<CircularSeekBarExamplePage>
               innerThumbStrokeWidth: _thumbVisible ? 3 : 0,
               outerThumbRadius: _thumbVisible ? 5 : 0,
               outerThumbStrokeWidth: _thumbVisible ? 10 : 0,
+              valueNotifier: _valueNotifier,
+              child: Center(
+                child: ValueListenableBuilder(
+                    valueListenable: _valueNotifier,
+                    builder: (_, double value, __) => Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          '${value.round()}',
+                            style: kNotoSansBold16.copyWith(color: Colors.white)
+                        ),
+                        Text(
+                          'progress',
+                          style: kNotoSansRegular14.copyWith(color: Colors.grey)
+                        ),
+                      ],
+                    )
+                ),
+              ),
             ),
             const SizedBox(
               height: 20,
