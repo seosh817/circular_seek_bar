@@ -198,6 +198,7 @@ class _CircularSeekBarState extends State<CircularSeekBar> {
             }),
       );
     } else {
+      widget.valueNotifier?.value = _progress!;
       return CustomPaint(
         size: Size(widget.width, widget.height),
         painter: _SeekBarPainter(
