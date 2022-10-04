@@ -357,7 +357,10 @@ class _SeekBarPainter extends CustomPainter {
         double totalFilledAngleRatio = (dashWidth * progressDashCounts) / totalTrackDashWidth.toDouble();
         double totalNotFilledAngleRatio = totalRatio - totalFilledAngleRatio;
         double notFilledAngleRatio = totalNotFilledAngleRatio * trackDashCounts;
-        double progressAngle = dashSum * progressDashCounts + _lerp(0, dashWidth, notFilledAngleRatio);
+
+        double notFilledProgressAngle = _lerp(0, dashWidth, notFilledAngleRatio);
+        double filledProgressAngle = trackDashCounts >= progressDashCounts + 1 ? dashSum * progressDashCounts : dashSum * (progressDashCounts - 1) + dashWidth;
+        double progressAngle = filledProgressAngle + notFilledProgressAngle;
 
         double thumbX = center.dx - sin(_degreesToRadians(startAngle + progressAngle)) * radius;
         double thumbY = center.dy + cos(_degreesToRadians(startAngle + progressAngle)) * radius;
