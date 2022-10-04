@@ -31,6 +31,7 @@ class CircularSeekBar extends StatefulWidget {
   final Color outerThumbColor;
   final double dashWidth;
   final double dashGap;
+  final ValueNotifier<double>? valueNotifier;
 
   const CircularSeekBar({
     Key? key,
@@ -60,6 +61,7 @@ class CircularSeekBar extends StatefulWidget {
     this.outerThumbColor = Colors.blueAccent,
     this.dashGap = 0,
     this.dashWidth = 0,
+    this.valueNotifier,
   }) : super(key: key);
 
   @override
@@ -159,6 +161,7 @@ class _CircularSeekBarState extends State<CircularSeekBar> {
             curve: widget.curves,
             onEnd: widget.onEnd,
             builder: (BuildContext context, double progress, __) {
+              widget.valueNotifier?.value = progress;
               return CustomPaint(
                 size: Size(widget.width, widget.height),
                 painter: _SeekBarPainter(
