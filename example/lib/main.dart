@@ -71,6 +71,7 @@ class _CircularSeekBarExamplePageState extends State<CircularSeekBarExamplePage>
               dashWidth: _dashWidth,
               dashGap: _dashGap,
               animation: _animation,
+              curves: Curves.bounceOut,
               innerThumbRadius: _thumbVisible ? 5 : 0,
               innerThumbStrokeWidth: _thumbVisible ? 3 : 0,
               outerThumbRadius: _thumbVisible ? 5 : 0,
