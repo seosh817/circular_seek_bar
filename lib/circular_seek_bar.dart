@@ -32,6 +32,7 @@ class CircularSeekBar extends StatefulWidget {
   final double dashWidth;
   final double dashGap;
   final ValueNotifier<double>? valueNotifier;
+  final Widget? child;
 
   const CircularSeekBar({
     Key? key,
@@ -62,6 +63,7 @@ class CircularSeekBar extends StatefulWidget {
     this.dashGap = 0,
     this.dashWidth = 0,
     this.valueNotifier,
+    this.child,
   }) : super(key: key);
 
   @override
@@ -186,6 +188,11 @@ class _CircularSeekBarState extends State<CircularSeekBar> {
                   dashWidth: widget.dashWidth,
                   dashGap: widget.dashGap,
                 ),
+                child: SizedBox(
+                  width: widget.width,
+                  height: widget.height,
+                  child: widget.child,
+                ),
               );
             }),
       );
@@ -213,6 +220,11 @@ class _CircularSeekBarState extends State<CircularSeekBar> {
           outerThumbColor: widget.outerThumbColor,
           dashWidth: widget.dashWidth,
           dashGap: widget.dashGap,
+        ),
+        child: SizedBox(
+          width: widget.width,
+          height: widget.height,
+          child: widget.child,
         ),
       );
     }
