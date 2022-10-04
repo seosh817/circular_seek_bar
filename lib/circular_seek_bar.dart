@@ -164,6 +164,7 @@ class _CircularSeekBarState extends State<CircularSeekBar> {
             onEnd: widget.onEnd,
             builder: (BuildContext context, double progress, __) {
               widget.valueNotifier?.value = progress;
+              _progress = progress;
               return CustomPaint(
                 size: Size(widget.width, widget.height),
                 painter: _SeekBarPainter(
