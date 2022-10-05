@@ -42,6 +42,7 @@ class _CircularSeekBarExamplePageState extends State<CircularSeekBarExamplePage>
   bool _rounded = true;
   bool _animation = true;
   bool _thumbVisible = true;
+  bool _interactive = true;
 
   @override
   void dispose() {
@@ -282,6 +283,24 @@ class _CircularSeekBarExamplePageState extends State<CircularSeekBarExamplePage>
                               onChanged: (value) {
                                 setState(() {
                                   _thumbVisible = value;
+                                });
+                              }),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: Row(
+                        children: [
+                          Text(
+                            'interactive: ',
+                            style: kNotoSansBold14.copyWith(color: Colors.white),
+                          ),
+                          Switch(
+                              value: _interactive,
+                              onChanged: (value) {
+                                setState(() {
+                                  _interactive = value;
                                 });
                               }),
                         ],
