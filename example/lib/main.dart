@@ -1,5 +1,5 @@
 import 'package:circular_seek_bar/circular_seek_bar.dart';
-import 'package:example/util/text_style.dart';
+import 'package:circular_seek_bar_example/util/text_style.dart';
 import 'package:flutter/material.dart';
 
 void main() {
