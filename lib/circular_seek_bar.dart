@@ -270,33 +270,46 @@ class _CircularSeekBarState extends State<CircularSeekBar> {
       );
     } else {
       widget.valueNotifier?.value = _progress!;
-      return CustomPaint(
-        size: Size(widget.width, widget.height),
-        painter: _SeekBarPainter(
-          progress: _progress!,
-          minProgress: widget.minProgress,
-          maxProgress: widget.maxProgress,
-          startAngle: widget.startAngle,
-          sweepAngle: widget.sweepAngle,
-          barWidth: widget.barWidth,
-          trackColor: widget.trackColor,
-          trackGradientColors: widget.trackGradientColors,
-          progressColor: widget.progressColor,
-          progressGradientColors: widget.progressGradientColors,
-          strokeCap: widget.strokeCap,
-          innerThumbRadius: widget.innerThumbRadius,
-          innerThumbStrokeWidth: widget.innerThumbStrokeWidth,
-          innerThumbColor: widget.innerThumbColor,
-          outerThumbRadius: widget.outerThumbRadius,
-          outerThumbStrokeWidth: widget.outerThumbStrokeWidth,
-          outerThumbColor: widget.outerThumbColor,
-          dashWidth: widget.dashWidth,
-          dashGap: widget.dashGap,
-        ),
-        child: SizedBox(
-          width: widget.width,
-          height: widget.height,
-          child: widget.child,
+      return GestureDetector(
+        key: _key,
+        onTapDown: (details) {
+          if (widget.interactive) {
+            _handleGesture(details);
+          }
+        },
+        onPanUpdate: (details) {
+          if (widget.interactive) {
+            _handleGesture(details);
+          }
+        },
+        child: CustomPaint(
+          size: Size(widget.width, widget.height),
+          painter: _SeekBarPainter(
+            progress: _progress!,
+            minProgress: widget.minProgress,
+            maxProgress: widget.maxProgress,
+            startAngle: widget.startAngle,
+            sweepAngle: widget.sweepAngle,
+            barWidth: widget.barWidth,
+            trackColor: widget.trackColor,
+            trackGradientColors: widget.trackGradientColors,
+            progressColor: widget.progressColor,
+            progressGradientColors: widget.progressGradientColors,
+            strokeCap: widget.strokeCap,
+            innerThumbRadius: widget.innerThumbRadius,
+            innerThumbStrokeWidth: widget.innerThumbStrokeWidth,
+            innerThumbColor: widget.innerThumbColor,
+            outerThumbRadius: widget.outerThumbRadius,
+            outerThumbStrokeWidth: widget.outerThumbStrokeWidth,
+            outerThumbColor: widget.outerThumbColor,
+            dashWidth: widget.dashWidth,
+            dashGap: widget.dashGap,
+          ),
+          child: SizedBox(
+            width: widget.width,
+            height: widget.height,
+            child: widget.child,
+          ),
         ),
       );
     }
