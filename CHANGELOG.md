@@ -13,3 +13,8 @@ reformat dart code and edit README.md
 ## 1.0.2
 
 Fix bug: Fix progress not updated bug
+
+## 1.0.3
+
+- Fix bug: Fix progress not updated bug
+- Add animation description 
