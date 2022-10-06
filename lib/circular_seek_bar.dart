@@ -179,7 +179,9 @@ class _CircularSeekBarState extends State<CircularSeekBar> {
         : _angleToProgress(angle > 0 ? angle : angle + 360, widget.startAngle,
             widget.sweepAngle);
     if (progress >= widget.minProgress && progress <= widget.maxProgress) {
+      setState(() {
         _progress = progress;
+      });
     }
   }
 
