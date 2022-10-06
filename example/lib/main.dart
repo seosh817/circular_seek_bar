@@ -26,10 +26,12 @@ class CircularSeekBarExamplePage extends StatefulWidget {
   const CircularSeekBarExamplePage({Key? key}) : super(key: key);
 
   @override
-  State<CircularSeekBarExamplePage> createState() => _CircularSeekBarExamplePageState();
+  State<CircularSeekBarExamplePage> createState() =>
+      _CircularSeekBarExamplePageState();
 }
 
-class _CircularSeekBarExamplePageState extends State<CircularSeekBarExamplePage> {
+class _CircularSeekBarExamplePageState
+    extends State<CircularSeekBarExamplePage> {
   final ValueNotifier<double> _valueNotifier = ValueNotifier(0);
 
   double _progress = 90;
@@ -68,7 +70,17 @@ class _CircularSeekBarExamplePageState extends State<CircularSeekBarExamplePage>
               startAngle: _startAngle,
               sweepAngle: _sweepAngle,
               strokeCap: _rounded ? StrokeCap.round : StrokeCap.butt,
-              progressGradientColors: _useGradient ? [Colors.red, Colors.orange, Colors.yellow, Colors.green, Colors.blue, Colors.indigo, Colors.purple] : [],
+              progressGradientColors: _useGradient
+                  ? [
+                      Colors.red,
+                      Colors.orange,
+                      Colors.yellow,
+                      Colors.green,
+                      Colors.blue,
+                      Colors.indigo,
+                      Colors.purple
+                    ]
+                  : [],
               dashWidth: _dashWidth,
               dashGap: _dashGap,
               animation: _animation,
@@ -83,19 +95,16 @@ class _CircularSeekBarExamplePageState extends State<CircularSeekBarExamplePage>
                 child: ValueListenableBuilder(
                     valueListenable: _valueNotifier,
                     builder: (_, double value, __) => Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          '${value.round()}',
-                            style: kNotoSansBold16.copyWith(color: Colors.white)
-                        ),
-                        Text(
-                          'progress',
-                          style: kNotoSansRegular14.copyWith(color: Colors.grey)
-                        ),
-                      ],
-                    )
-                ),
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text('${value.round()}',
+                                style: kNotoSansBold16.copyWith(
+                                    color: Colors.white)),
+                            Text('progress',
+                                style: kNotoSansRegular14.copyWith(
+                                    color: Colors.grey)),
+                          ],
+                        )),
               ),
             ),
             const SizedBox(
@@ -111,7 +120,8 @@ class _CircularSeekBarExamplePageState extends State<CircularSeekBarExamplePage>
                         children: [
                           Text(
                             'progress: ',
-                            style: kNotoSansBold14.copyWith(color: Colors.white),
+                            style:
+                                kNotoSansBold14.copyWith(color: Colors.white),
                           ),
                           Slider(
                             min: 0.0,
@@ -132,7 +142,8 @@ class _CircularSeekBarExamplePageState extends State<CircularSeekBarExamplePage>
                         children: [
                           Text(
                             'startAngle: ',
-                            style: kNotoSansBold14.copyWith(color: Colors.white),
+                            style:
+                                kNotoSansBold14.copyWith(color: Colors.white),
                           ),
                           Slider(
                             min: 0.0,
@@ -153,7 +164,8 @@ class _CircularSeekBarExamplePageState extends State<CircularSeekBarExamplePage>
                         children: [
                           Text(
                             'sweepAngle: ',
-                            style: kNotoSansBold14.copyWith(color: Colors.white),
+                            style:
+                                kNotoSansBold14.copyWith(color: Colors.white),
                           ),
                           Slider(
                             min: 0.0,
@@ -174,7 +186,8 @@ class _CircularSeekBarExamplePageState extends State<CircularSeekBarExamplePage>
                         children: [
                           Text(
                             'dashWidth: ',
-                            style: kNotoSansBold14.copyWith(color: Colors.white),
+                            style:
+                                kNotoSansBold14.copyWith(color: Colors.white),
                           ),
                           Slider(
                             min: 0.0,
@@ -195,7 +208,8 @@ class _CircularSeekBarExamplePageState extends State<CircularSeekBarExamplePage>
                         children: [
                           Text(
                             'dashGap: ',
-                            style: kNotoSansBold14.copyWith(color: Colors.white),
+                            style:
+                                kNotoSansBold14.copyWith(color: Colors.white),
                           ),
                           Slider(
                             min: 0.0,
@@ -216,7 +230,8 @@ class _CircularSeekBarExamplePageState extends State<CircularSeekBarExamplePage>
                         children: [
                           Text(
                             'barWidth: ',
-                            style: kNotoSansBold14.copyWith(color: Colors.white),
+                            style:
+                                kNotoSansBold14.copyWith(color: Colors.white),
                           ),
                           Slider(
                             min: 1.0,
@@ -237,7 +252,8 @@ class _CircularSeekBarExamplePageState extends State<CircularSeekBarExamplePage>
                         children: [
                           Text(
                             'useGradient: ',
-                            style: kNotoSansBold14.copyWith(color: Colors.white),
+                            style:
+                                kNotoSansBold14.copyWith(color: Colors.white),
                           ),
                           Switch(
                               value: _useGradient,
@@ -248,7 +264,8 @@ class _CircularSeekBarExamplePageState extends State<CircularSeekBarExamplePage>
                               }),
                           Text(
                             'rounded: ',
-                            style: kNotoSansBold14.copyWith(color: Colors.white),
+                            style:
+                                kNotoSansBold14.copyWith(color: Colors.white),
                           ),
                           Switch(
                               value: _rounded,
@@ -266,7 +283,8 @@ class _CircularSeekBarExamplePageState extends State<CircularSeekBarExamplePage>
                         children: [
                           Text(
                             'animation: ',
-                            style: kNotoSansBold14.copyWith(color: Colors.white),
+                            style:
+                                kNotoSansBold14.copyWith(color: Colors.white),
                           ),
                           Switch(
                               value: _animation,
@@ -277,7 +295,8 @@ class _CircularSeekBarExamplePageState extends State<CircularSeekBarExamplePage>
                               }),
                           Text(
                             'thumbVisible: ',
-                            style: kNotoSansBold14.copyWith(color: Colors.white),
+                            style:
+                                kNotoSansBold14.copyWith(color: Colors.white),
                           ),
                           Switch(
                               value: _thumbVisible,
@@ -295,7 +314,8 @@ class _CircularSeekBarExamplePageState extends State<CircularSeekBarExamplePage>
                         children: [
                           Text(
                             'interactive: ',
-                            style: kNotoSansBold14.copyWith(color: Colors.white),
+                            style:
+                                kNotoSansBold14.copyWith(color: Colors.white),
                           ),
                           Switch(
                               value: _interactive,

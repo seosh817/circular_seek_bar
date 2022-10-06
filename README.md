@@ -26,21 +26,22 @@
 # Getting Started
 - [Youtube Demo Video](#youtube-demo-video)
 - [Basic Examples](#basic-examples)
-    - [Basic SeekBar](#1-basic-seekbar)
-    - [Gradient SeekBar](#2-gradient-seekbar)
-    - [Dashed SeekBar](#3-dashed-seekbar)
-    - [Add ValueNotifier](#4-add-valuenotifier)
+  - [Basic SeekBar](#1-basic-seekbar)
+  - [Gradient SeekBar](#2-gradient-seekbar)
+  - [Dashed SeekBar](#3-dashed-seekbar)
+  - [Add ValueNotifier](#4-add-valuenotifier)
 - [Installing](#installing)
-    - [Depend on it](#1-depend-on-it)
-    - [Install it](#2-install-it)
-    - [Import it](#3-import-it)
+  - [Depend on it](#1-depend-on-it)
+  - [Install it](#2-install-it)
+  - [Import it](#3-import-it)
 - [Properties](#properties)
 - [License](#license)
+- [Contribution](#contribution)
 
 # Youtube Demo Video
 An example project can be found in the [example directory](https://github.com/seosh817/Flutter_CircularSeekBar/tree/master/example) of this repository.
 
-[![Demo Video](http://img.youtube.com/vi/rQ_-iKXHR-M/hqdefault.jpg)](https://youtu.be/rQ_-iKXHR-M)
+[![Demo Video](https://img.youtube.com/vi/rQ_-iKXHR-M/hqdefault.jpg)](https://youtu.be/rQ_-iKXHR-M)
 
 # Basic Examples
 
@@ -206,7 +207,7 @@ Add this to your package's `pubspec.yaml` file:
 
 ```yaml
 dependencies:
-  circular_seek_bar: ^1.0.0
+  circular_seek_bar: ^1.0.1
 ```
 
 or
@@ -266,7 +267,7 @@ You can customize the CircularSeekBar using the following properties:
 | interactive | `bool` | true | Set to true if you want to interact with TapDown to change the seekbar's progress.|
 | child | `Widget?` | null | This widget is placed on the seek bar.|
 
-## License
+# License
 ```
 MIT License
 
@@ -290,3 +291,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ```
+
+# Contribution
+Feel free to file an [issue](https://github.com/seosh817/Flutter_CircularSeekBar/issues) if you find a problem or make [pull requests](https://github.com/seosh817/Flutter_CircularSeekBar/pulls).<br>
+All contributions are welcome 😁
+
