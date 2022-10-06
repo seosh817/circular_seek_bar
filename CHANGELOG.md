@@ -9,3 +9,7 @@ Edit README.md and description
 ## 1.0.1
 
 reformat dart code and edit README.md
+
+## 1.0.2
+
+Fix bug: Fix progress not updated bug
