@@ -30,6 +30,7 @@
   - [Gradient SeekBar](#2-gradient-seekbar)
   - [Dashed SeekBar](#3-dashed-seekbar)
   - [Add ValueNotifier](#4-add-valuenotifier)
+  - [Animations](#5-animations)
 - [Installing](#installing)
   - [Depend on it](#1-depend-on-it)
   - [Install it](#2-install-it)
@@ -195,6 +196,50 @@ CircularSeekBar(
                 Text('progress', style: kNotoSansRegular14.copyWith(color: Colors.grey)),
               ],
             )),
+  ),
+)
+```
+
+### 5. Animations
+
+<img src="https://github.com/seosh817/Flutter_CircularSeekBar/blob/hotfix/1.0.3/images/animations_bounceOut.gif?raw=true" width="300"/>
+
+
+### Dart code:
+
+Various animations can be applied to the SeekBar by changing the `curves` property.
+
+```dart
+CircularSeekBar(
+  width: double.infinity,
+  height: 250,
+  progress: _progress,
+  barWidth: 8,
+  startAngle: 45,
+  sweepAngle: 270,
+  strokeCap: StrokeCap.butt,
+  progressGradientColors: const [Colors.red, Colors.orange, Colors.yellow, Colors.green, Colors.blue, Colors.indigo, Colors.purple],
+  innerThumbRadius: 5,
+  innerThumbStrokeWidth: 3,
+  innerThumbColor: Colors.white,
+  outerThumbRadius: 5,
+  outerThumbStrokeWidth: 10,
+  outerThumbColor: Colors.blueAccent,
+  dashWidth: 1,
+  dashGap: 2,
+  animation: true,
+  curves: Curves.bounceOut,
+  valueNotifier: _valueNotifier,
+  child: Center(
+    child: ValueListenableBuilder(
+        valueListenable: _valueNotifier,
+        builder: (_, double value, __) => Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text('${value.round()}', style: kNotoSansBold16.copyWith(color: Colors.white)),
+            Text('progress', style: kNotoSansRegular14.copyWith(color: Colors.grey)),
+          ],
+        )),
   ),
 )
 ```
