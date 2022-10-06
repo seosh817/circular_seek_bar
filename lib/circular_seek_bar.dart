@@ -161,7 +161,7 @@ class _CircularSeekBarState extends State<CircularSeekBar> {
     return size;
   }
 
-  /// A method that converts the x and y coordinate values received by the onTapDown callback to progress.
+  /// Converts the x and y coordinate values received by the onTapDown callback to progress.
   void _handleGesture(details) {
     double dx = details.localPosition.dx;
     double dy = details.localPosition.dy;
