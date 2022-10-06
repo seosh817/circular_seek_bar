@@ -179,9 +179,7 @@ class _CircularSeekBarState extends State<CircularSeekBar> {
         : _angleToProgress(angle > 0 ? angle : angle + 360, widget.startAngle,
             widget.sweepAngle);
     if (progress >= widget.minProgress && progress <= widget.maxProgress) {
-      setState(() {
         _progress = progress;
-      });
     }
   }
 
@@ -259,11 +257,10 @@ class _CircularSeekBarState extends State<CircularSeekBar> {
             onEnd: widget.onEnd,
             builder: (BuildContext context, double progress, __) {
               widget.valueNotifier?.value = progress;
-              _progress = progress;
               return CustomPaint(
                 size: Size(widget.width, widget.height),
                 painter: _SeekBarPainter(
-                  progress: _progress!,
+                  progress: progress,
                   minProgress: widget.minProgress,
                   maxProgress: widget.maxProgress,
                   startAngle: widget.startAngle,
