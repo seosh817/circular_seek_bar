@@ -23,12 +23,26 @@
 
 <p align="center">Circular seek bar package for flutter that supports customizable animations, dashes, and gradients.</p>
 
+# Getting Started
+- [Youtube Demo Video](#youtube-demo-video)
+- [Basic Examples](#basic-examples)
+    - [Basic SeekBar](#1-basic-seekbar)
+    - [Gradient SeekBar](#2-gradient-seekbar)
+    - [Dashed SeekBar](#3-dashed-seekbar)
+    - [Add ValueNotifier](#4-add-valuenotifier)
+- [Installing](#installing)
+    - [Depend on it](#1-depend-on-it)
+    - [Install it](#2-install-it)
+    - [Import it](#3-import-it)
+- [Properties](#properties)
+- [License](#license)
+
 # Youtube Demo Video
 An example project can be found in the [example directory](https://github.com/seosh817/Flutter_CircularSeekBar/tree/master/example) of this repository.
 
 [![Demo Video](http://img.youtube.com/vi/rQ_-iKXHR-M/hqdefault.jpg)](https://youtu.be/rQ_-iKXHR-M)
 
-## Basic Examples
+# Basic Examples
 
 ### 1. Basic SeekBar
 
@@ -184,7 +198,7 @@ CircularSeekBar(
 )
 ```
 
-## Installing
+# Installing
 
 ### 1. Depend on it
 
