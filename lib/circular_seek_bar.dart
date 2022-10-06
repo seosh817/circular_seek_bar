@@ -207,8 +207,8 @@ class _CircularSeekBarState extends State<CircularSeekBar> {
 
       if (relativeAngle >= relativeDashStartAngle && relativeAngle <= relativeDashEndAngle) {
         double totalFilledDashRatio = (dashWidth * i) / totalTrackDashWidth.toDouble();
-        double totalNotFilledDashRatio = ((relativeAngle - dashSum * i) / dashWidth.toDouble()) / trackDashCounts;
-        return _lerp(widget.minProgress, widget.maxProgress, totalFilledDashRatio + totalNotFilledDashRatio);
+        double totalHalfWidthDashRatio = ((relativeAngle - dashSum * i) / dashWidth.toDouble()) / trackDashCounts;
+        return _lerp(widget.minProgress, widget.maxProgress, totalFilledDashRatio + totalHalfWidthDashRatio);
       }
     }
     return -1;
@@ -491,12 +491,12 @@ class _SeekBarPainter extends CustomPainter {
         double totalTrackDashWidth = dashWidth * trackDashCounts;
         double totalRatio = _lerpRatio(minProgress, maxProgress, progress);
         double totalFilledAngleRatio = (dashWidth * progressDashCounts) / totalTrackDashWidth.toDouble();
-        double totalNotFilledAngleRatio = totalRatio - totalFilledAngleRatio;
-        double notFilledAngleRatio = totalNotFilledAngleRatio * trackDashCounts;
+        double totalHalfWidthAngleRatio = totalRatio - totalFilledAngleRatio;
+        double halfWidthAngleRatio = totalHalfWidthAngleRatio * trackDashCounts;
 
-        double notFilledProgressAngle = _lerp(0, dashWidth, notFilledAngleRatio);
+        double halfWidthProgressAngle = _lerp(0, dashWidth, halfWidthAngleRatio);
         double filledProgressAngle = trackDashCounts >= progressDashCounts + 1 ? dashSum * progressDashCounts : dashSum * (progressDashCounts - 1) + dashWidth;
-        double progressAngle = filledProgressAngle + notFilledProgressAngle;
+        double progressAngle = filledProgressAngle + halfWidthProgressAngle;
 
         double thumbX = center.dx - sin(_degreesToRadians(startAngle + progressAngle)) * radius;
         double thumbY = center.dy + cos(_degreesToRadians(startAngle + progressAngle)) * radius;
