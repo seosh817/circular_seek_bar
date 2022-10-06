@@ -26,9 +26,7 @@
 # Demo Video
 An example project can be found in the [example directory](https://github.com/seosh817/Flutter_CircularSeekBar/tree/master/example) of this repository.
 
-<video width="400" height="800" autoplay loop controls>
-  <source src="https://user-images.githubusercontent.com/43161981/194052306-eb7c6102-d769-48fc-8ebc-b8e3c24670db.mp4" type="video/mp4">
-</video>
+[![Demo Video](http://img.youtube.com/vi/rQ_-iKXHR-M/hqdefault.jpg)](https://youtu.be/rQ_-iKXHR-M)
 
 ## Basic Examples
 
