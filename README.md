@@ -207,7 +207,7 @@ Add this to your package's `pubspec.yaml` file:
 
 ```yaml
 dependencies:
-  circular_seek_bar: ^1.0.0
+  circular_seek_bar: ^1.0.1
 ```
 
 or
