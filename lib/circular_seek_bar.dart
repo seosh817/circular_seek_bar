@@ -5,35 +5,98 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 
 class CircularSeekBar extends StatefulWidget {
+  /// CircularSeekBar width.
   final double width;
+
+  /// CircularSeekBar height.
   final double height;
+
+  /// Current value of seek bar.
   final double progress;
+
+  /// Minimum value of seek bar.
   final double minProgress;
+
+  /// Maximum value of seek bar.
   final double maxProgress;
+
+  /// [startAngle] should be between 0 and 360.
+  /// The Angle to start drawing this seek bar from
   final double startAngle;
+
+  /// [sweepAngle] should be be between 0 and 360.
+  /// The Angle through which to draw the seek bar
   final double sweepAngle;
+
+  /// The thickness of the seek bar.
   final double barWidth;
+
+  /// Background track color of seek bar.
   final Color trackColor;
+
+  /// If [trackGradientColors] is not empty, [trackColor] is not applied.
+  /// Background track gradient colors of seek bar.
   final List<Color> trackGradientColors;
+
+  /// Foreground progress color of seek bar.
   final Color progressColor;
+
+  /// If [progressGradientColors] is not empty, [progressColor] is not applied.
+  /// Foreground progressGradientColors of seek bar.
   final List<Color> progressGradientColors;
+
+  /// Styles to use for arcs endings.
   final StrokeCap strokeCap;
+
+  /// Active seek bar animation.
   final bool animation;
+
+  /// Animation duration milliseconds.
   final int animDurationMillis;
+
+  /// Default is [Curves.linear]
+  /// Animation curve.
   final Curve curves;
-  final VoidCallback? onEnd;
-  final bool interactive;
+
+  /// The radius of the seekbar inner thumb.
   final double innerThumbRadius;
+
+  /// The stroke width of the seekbar inner thumb.
   final double innerThumbStrokeWidth;
+
+  /// Color of the seekbar inner thumb.
   final Color innerThumbColor;
+
+  /// The radius of the seekbar outer thumb.
   final double outerThumbRadius;
+
+  /// The stroke width of the seekbar outer thumb.
   final double outerThumbStrokeWidth;
+
+  /// Color of the seekbar outer thumb.
   final Color outerThumbColor;
+
+  /// If you want to make dashed progress, set [dashWidth] and [dashGap] to greater than 0
+  /// Dash width of seek bar
   final double dashWidth;
+
+  /// If you want to make dashed progress, set [dashWidth] and [dashGap] to greater than 0
+  /// Dash gap of seek bar.
   final double dashGap;
+
+  /// This ValueNotifier notifies the listener that the seekbar's progress value has changed.
   final ValueNotifier<double>? valueNotifier;
+
+  /// This callback function will execute when Animation is finished.
+  final VoidCallback? onEnd;
+
+  /// Set to true if you want to interact with TapDown to change the seekbar's progress.
+  final bool interactive;
+
+  /// This widget is placed on the seek bar.
   final Widget? child;
 
+  /// Constructor of CircularSeekBar.
   const CircularSeekBar({
     Key? key,
     required this.width,
@@ -52,8 +115,6 @@ class CircularSeekBar extends StatefulWidget {
     this.animation = true,
     this.animDurationMillis = 1000,
     this.curves = Curves.linear,
-    this.onEnd,
-    this.interactive = true,
     this.innerThumbRadius = 0,
     this.innerThumbStrokeWidth = 0,
     this.innerThumbColor = Colors.white,
@@ -63,6 +124,8 @@ class CircularSeekBar extends StatefulWidget {
     this.dashGap = 0,
     this.dashWidth = 0,
     this.valueNotifier,
+    this.onEnd,
+    this.interactive = true,
     this.child,
   }) : super(key: key);
 
@@ -74,12 +137,15 @@ class _CircularSeekBarState extends State<CircularSeekBar> {
   double? _progress;
   final GlobalKey _key = GlobalKey();
 
+  /// Initialize CircularSeekBar's progress.
   @override
   void initState() {
     super.initState();
     _progress = widget.progress;
   }
 
+
+  /// Reset CircularSeekBar's progress.
   @override
   void didUpdateWidget(CircularSeekBar oldWidget) {
     super.didUpdateWidget(oldWidget);
@@ -88,19 +154,21 @@ class _CircularSeekBarState extends State<CircularSeekBar> {
     }
   }
 
+  /// Get size of CircularSeekBar with RenderBox.
   Size _getSize(GlobalKey key) {
     final RenderBox renderBox = key.currentContext!.findRenderObject() as RenderBox;
     Size size = renderBox.size;
     return size;
   }
 
+  /// A method that converts the x and y coordinate values received by the onTapDown callback to progress.
   void _handleGesture(details) {
     double dx = details.localPosition.dx;
     double dy = details.localPosition.dy;
     Size size = _getSize(_key);
     double centerX = size.width / 2.0;
     double centerY = size.height / 2.0;
-    double angle = _getTouchDegrees(centerX, dx, centerY, dy);
+    double angle = _getTouchedDegrees(centerX, dx, centerY, dy);
     double progress = (widget.dashWidth > 0 && widget.dashGap > 0) ? _angleToDashedProgress(angle > 0 ? angle : angle + 360, widget.startAngle, widget.sweepAngle, widget.dashWidth, widget.dashGap) : _angleToProgress(angle > 0 ? angle : angle + 360, widget.startAngle, widget.sweepAngle);
     if (progress >= widget.minProgress && progress <= widget.maxProgress) {
       setState(() {
@@ -109,19 +177,23 @@ class _CircularSeekBarState extends State<CircularSeekBar> {
     }
   }
 
+  /// Method to get relative angle of CircularSeekBar.
   double _getRelativeAngle(double angle, double startAngle) {
     return (angle - startAngle) >= 0 ? (angle - startAngle) : (360 - startAngle + angle);
   }
 
-  double _getTouchDegrees(double centerX, double dx, double centerY, double dy) {
+  /// Convert (x, y) coordinates to an angle.
+  double _getTouchedDegrees(double centerX, double dx, double centerY, double dy) {
     return _radiansToDegrees(atan2(centerX - dx, dy - centerY));
   }
 
+  /// Convert angle to progress.
   double _angleToProgress(double angle, double startAngle, double sweepAngle) {
     double relativeAngle = _getRelativeAngle(angle, startAngle);
     return (relativeAngle / sweepAngle) * 100;
   }
 
+  /// Convert the angle of dashed seekbar to progress
   double _angleToDashedProgress(double angle, double startAngle, double sweepAngle, double dashWidth, double dashGap) {
     double relativeAngle = (angle - startAngle) >= 0 ? (angle - startAngle) : (360 - startAngle + angle);
     double dashSum = dashWidth + dashGap;
@@ -135,8 +207,8 @@ class _CircularSeekBarState extends State<CircularSeekBar> {
 
       if (relativeAngle >= relativeDashStartAngle && relativeAngle <= relativeDashEndAngle) {
         double totalFilledDashRatio = (dashWidth * i) / totalTrackDashWidth.toDouble();
-        double totalNotFilledDashRatio = ((relativeAngle - dashSum * i) / dashWidth.toDouble()) / trackDashCounts;
-        return _lerp(widget.minProgress, widget.maxProgress, totalFilledDashRatio + totalNotFilledDashRatio);
+        double totalHalfWidthDashRatio = ((relativeAngle - dashSum * i) / dashWidth.toDouble()) / trackDashCounts;
+        return _lerp(widget.minProgress, widget.maxProgress, totalFilledDashRatio + totalHalfWidthDashRatio);
       }
     }
     return -1;
@@ -164,6 +236,7 @@ class _CircularSeekBarState extends State<CircularSeekBar> {
             onEnd: widget.onEnd,
             builder: (BuildContext context, double progress, __) {
               widget.valueNotifier?.value = progress;
+              _progress = progress;
               return CustomPaint(
                 size: Size(widget.width, widget.height),
                 painter: _SeekBarPainter(
@@ -178,7 +251,6 @@ class _CircularSeekBarState extends State<CircularSeekBar> {
                   progressColor: widget.progressColor,
                   progressGradientColors: widget.progressGradientColors,
                   strokeCap: widget.strokeCap,
-                  interactive: widget.interactive,
                   innerThumbRadius: widget.innerThumbRadius,
                   innerThumbStrokeWidth: widget.innerThumbStrokeWidth,
                   innerThumbColor: widget.innerThumbColor,
@@ -197,34 +269,47 @@ class _CircularSeekBarState extends State<CircularSeekBar> {
             }),
       );
     } else {
-      return CustomPaint(
-        size: Size(widget.width, widget.height),
-        painter: _SeekBarPainter(
-          progress: _progress!,
-          minProgress: widget.minProgress,
-          maxProgress: widget.maxProgress,
-          startAngle: widget.startAngle,
-          sweepAngle: widget.sweepAngle,
-          barWidth: widget.barWidth,
-          trackColor: widget.trackColor,
-          trackGradientColors: widget.trackGradientColors,
-          progressColor: widget.progressColor,
-          progressGradientColors: widget.progressGradientColors,
-          strokeCap: widget.strokeCap,
-          interactive: widget.interactive,
-          innerThumbRadius: widget.innerThumbRadius,
-          innerThumbStrokeWidth: widget.innerThumbStrokeWidth,
-          innerThumbColor: widget.innerThumbColor,
-          outerThumbRadius: widget.outerThumbRadius,
-          outerThumbStrokeWidth: widget.outerThumbStrokeWidth,
-          outerThumbColor: widget.outerThumbColor,
-          dashWidth: widget.dashWidth,
-          dashGap: widget.dashGap,
-        ),
-        child: SizedBox(
-          width: widget.width,
-          height: widget.height,
-          child: widget.child,
+      widget.valueNotifier?.value = _progress!;
+      return GestureDetector(
+        key: _key,
+        onTapDown: (details) {
+          if (widget.interactive) {
+            _handleGesture(details);
+          }
+        },
+        onPanUpdate: (details) {
+          if (widget.interactive) {
+            _handleGesture(details);
+          }
+        },
+        child: CustomPaint(
+          size: Size(widget.width, widget.height),
+          painter: _SeekBarPainter(
+            progress: _progress!,
+            minProgress: widget.minProgress,
+            maxProgress: widget.maxProgress,
+            startAngle: widget.startAngle,
+            sweepAngle: widget.sweepAngle,
+            barWidth: widget.barWidth,
+            trackColor: widget.trackColor,
+            trackGradientColors: widget.trackGradientColors,
+            progressColor: widget.progressColor,
+            progressGradientColors: widget.progressGradientColors,
+            strokeCap: widget.strokeCap,
+            innerThumbRadius: widget.innerThumbRadius,
+            innerThumbStrokeWidth: widget.innerThumbStrokeWidth,
+            innerThumbColor: widget.innerThumbColor,
+            outerThumbRadius: widget.outerThumbRadius,
+            outerThumbStrokeWidth: widget.outerThumbStrokeWidth,
+            outerThumbColor: widget.outerThumbColor,
+            dashWidth: widget.dashWidth,
+            dashGap: widget.dashGap,
+          ),
+          child: SizedBox(
+            width: widget.width,
+            height: widget.height,
+            child: widget.child,
+          ),
         ),
       );
     }
@@ -232,28 +317,64 @@ class _CircularSeekBarState extends State<CircularSeekBar> {
 }
 
 class _SeekBarPainter extends CustomPainter {
+  /// Current value of seek bar.
   final double progress;
+
+  /// Minimum value of seek bar.
   final double minProgress;
+
+  /// Maximum value of seek bar.
   final double maxProgress;
+
+  /// The Angle to start drawing this seek bar from
   final double startAngle;
+
+  /// The Angle through which to draw the seek bar
   final double sweepAngle;
+
+  /// The thickness of the seek bar.
   final double barWidth;
+
+  /// Background track color of seek bar.
   final Color trackColor;
+
+  /// Background track gradient colors of seek bar.
   final List<Color> trackGradientColors;
+
+  /// Foreground progress color of seek bar.
   final Color progressColor;
+
+  /// Foreground trackGradientColors of seek bar.
   final List<Color> progressGradientColors;
+
+  /// Styles to use for arcs endings.
   final StrokeCap strokeCap;
-  final bool interactive;
+
+  /// The radius of the seekbar inner thumb.
   final double innerThumbRadius;
+
+  /// The stroke width of the seekbar inner thumb.
   final double innerThumbStrokeWidth;
+
+  /// Color of the seekbar inner thumb.
   final Color innerThumbColor;
+
+  /// The radius of the seekbar outer thumb.
   final double outerThumbRadius;
+
+  /// The stroke width of the seekbar outer thumb.
   final double outerThumbStrokeWidth;
+
+  /// Color of the seekbar outer thumb.
   final Color outerThumbColor;
+
+  /// Dash width of seek bar
   final double dashWidth;
+
+  /// Dash gap of seek bar.
   final double dashGap;
 
-  // The initial rotational offset 90
+  /// The initial rotational offset 90
   static const double angleOffset = 90;
 
   _SeekBarPainter(
@@ -268,7 +389,6 @@ class _SeekBarPainter extends CustomPainter {
       required this.progressColor,
       required this.progressGradientColors,
       required this.strokeCap,
-      required this.interactive,
       required this.innerThumbRadius,
       required this.innerThumbStrokeWidth,
       required this.innerThumbColor,
@@ -303,6 +423,7 @@ class _SeekBarPainter extends CustomPainter {
 
       double sweepAngleRadian = _degreesToRadians(sweepAngle);
 
+      // Set gradients
       if (trackGradientColors.isNotEmpty) {
         Gradient trackGradient = SweepGradient(
           center: Alignment.center,
@@ -370,12 +491,12 @@ class _SeekBarPainter extends CustomPainter {
         double totalTrackDashWidth = dashWidth * trackDashCounts;
         double totalRatio = _lerpRatio(minProgress, maxProgress, progress);
         double totalFilledAngleRatio = (dashWidth * progressDashCounts) / totalTrackDashWidth.toDouble();
-        double totalNotFilledAngleRatio = totalRatio - totalFilledAngleRatio;
-        double notFilledAngleRatio = totalNotFilledAngleRatio * trackDashCounts;
+        double totalHalfWidthAngleRatio = totalRatio - totalFilledAngleRatio;
+        double halfWidthAngleRatio = totalHalfWidthAngleRatio * trackDashCounts;
 
-        double notFilledProgressAngle = _lerp(0, dashWidth, notFilledAngleRatio);
+        double halfWidthProgressAngle = _lerp(0, dashWidth, halfWidthAngleRatio);
         double filledProgressAngle = trackDashCounts >= progressDashCounts + 1 ? dashSum * progressDashCounts : dashSum * (progressDashCounts - 1) + dashWidth;
-        double progressAngle = filledProgressAngle + notFilledProgressAngle;
+        double progressAngle = filledProgressAngle + halfWidthProgressAngle;
 
         double thumbX = center.dx - sin(_degreesToRadians(startAngle + progressAngle)) * radius;
         double thumbY = center.dy + cos(_degreesToRadians(startAngle + progressAngle)) * radius;
@@ -444,7 +565,6 @@ class _SeekBarPainter extends CustomPainter {
         oldDelegate.progressColor != progressColor ||
         oldDelegate.progressGradientColors != progressGradientColors ||
         oldDelegate.strokeCap != strokeCap ||
-        oldDelegate.interactive != interactive ||
         oldDelegate.innerThumbRadius != innerThumbRadius ||
         oldDelegate.innerThumbStrokeWidth != innerThumbStrokeWidth ||
         oldDelegate.innerThumbColor != innerThumbColor ||
@@ -456,14 +576,18 @@ class _SeekBarPainter extends CustomPainter {
   }
 }
 
+/// Computes the linear interpolation between from and to. calculate a + t(b - a).
 double _lerp(double from, double to, double ratio) {
   return from + (to - from) * ratio;
 }
 
+/// Calculate linear interpolator percentage.
 double _lerpRatio(double from, double to, double progress) {
   return progress / (from + to);
 }
 
+/// Convert degrees to radians
 double _degreesToRadians(double angle) => angle * pi / 180.0;
 
+/// Convert radians to degrees
 double _radiansToDegrees(double radians) => radians * 180 / pi;

@@ -1,7 +1,7 @@
 name: circular_seek_bar
-description: A new Flutter package project.
-version: 0.0.1
-homepage:
+description: Circular seek bar package for flutter that supports customizable animations, dashes, and gradients.
+version: 1.0.0
+repository: https://github.com/seosh817/Flutter_CircularSeekBar
 
 environment:
   sdk: ">=2.17.0 <3.0.0"

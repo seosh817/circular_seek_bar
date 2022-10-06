@@ -1,5 +1,5 @@
 import 'package:circular_seek_bar/circular_seek_bar.dart';
-import 'package:example/util/text_style.dart';
+import 'package:circular_seek_bar_example/util/text_style.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -32,16 +32,17 @@ class CircularSeekBarExamplePage extends StatefulWidget {
 class _CircularSeekBarExamplePageState extends State<CircularSeekBarExamplePage> {
   final ValueNotifier<double> _valueNotifier = ValueNotifier(0);
 
-  double _progress = 50;
-  double _startAngle = 90;
-  double _sweepAngle = 180;
+  double _progress = 90;
+  double _startAngle = 45;
+  double _sweepAngle = 270;
   double _dashWidth = 0;
   double _dashGap = 0;
-  double _barWidth = 5;
+  double _barWidth = 8.0;
   bool _useGradient = true;
   bool _rounded = true;
   bool _animation = true;
   bool _thumbVisible = true;
+  bool _interactive = true;
 
   @override
   void dispose() {
@@ -71,11 +72,13 @@ class _CircularSeekBarExamplePageState extends State<CircularSeekBarExamplePage>
               dashWidth: _dashWidth,
               dashGap: _dashGap,
               animation: _animation,
+              curves: Curves.linear,
               innerThumbRadius: _thumbVisible ? 5 : 0,
               innerThumbStrokeWidth: _thumbVisible ? 3 : 0,
               outerThumbRadius: _thumbVisible ? 5 : 0,
               outerThumbStrokeWidth: _thumbVisible ? 10 : 0,
               valueNotifier: _valueNotifier,
+              interactive: _interactive,
               child: Center(
                 child: ValueListenableBuilder(
                     valueListenable: _valueNotifier,
@@ -175,7 +178,7 @@ class _CircularSeekBarExamplePageState extends State<CircularSeekBarExamplePage>
                           ),
                           Slider(
                             min: 0.0,
-                            max: 50.0,
+                            max: 40.0,
                             value: _dashWidth,
                             onChanged: (value) {
                               setState(() {
@@ -196,7 +199,7 @@ class _CircularSeekBarExamplePageState extends State<CircularSeekBarExamplePage>
                           ),
                           Slider(
                             min: 0.0,
-                            max: 20.0,
+                            max: 10.0,
                             value: _dashGap,
                             onChanged: (value) {
                               setState(() {
@@ -281,6 +284,24 @@ class _CircularSeekBarExamplePageState extends State<CircularSeekBarExamplePage>
                               onChanged: (value) {
                                 setState(() {
                                   _thumbVisible = value;
+                                });
+                              }),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: Row(
+                        children: [
+                          Text(
+                            'interactive: ',
+                            style: kNotoSansBold14.copyWith(color: Colors.white),
+                          ),
+                          Switch(
+                              value: _interactive,
+                              onChanged: (value) {
+                                setState(() {
+                                  _interactive = value;
                                 });
                               }),
                         ],
