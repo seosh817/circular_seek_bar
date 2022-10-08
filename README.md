@@ -21,16 +21,30 @@
   </a>
 </p><br>
 
-<p align="center">Circular seek bar package for flutter that supports customizable animations, dashes, and gradients.</p>
+<p align="center">Circular progress/seek bar package for flutter that supports customizable animations, dashes, and gradients.</p>
 
-# Demo Video
+# Getting Started
+- [Youtube Demo Video](#youtube-demo-video)
+- [Basic Examples](#basic-examples)
+  - [Basic SeekBar](#1-basic-seekbar)
+  - [Gradient SeekBar](#2-gradient-seekbar)
+  - [Dashed SeekBar](#3-dashed-seekbar)
+  - [Add ValueNotifier](#4-add-valuenotifier)
+  - [Animations](#5-animations)
+- [Installing](#installing)
+  - [Depend on it](#1-depend-on-it)
+  - [Install it](#2-install-it)
+  - [Import it](#3-import-it)
+- [Properties](#properties)
+- [License](#license)
+- [Contribution](#contribution)
+
+# Youtube Demo Video
 An example project can be found in the [example directory](https://github.com/seosh817/Flutter_CircularSeekBar/tree/master/example) of this repository.
 
-<video width="400" height="800" autoplay loop controls>
-  <source src="https://user-images.githubusercontent.com/43161981/194052306-eb7c6102-d769-48fc-8ebc-b8e3c24670db.mp4" type="video/mp4">
-</video>
+[![Demo Video](https://img.youtube.com/vi/rQ_-iKXHR-M/hqdefault.jpg)](https://youtu.be/rQ_-iKXHR-M)
 
-## Basic Examples
+# Basic Examples
 
 ### 1. Basic SeekBar
 
@@ -186,7 +200,51 @@ CircularSeekBar(
 )
 ```
 
-## Installing
+### 5. Animations
+
+<img src="https://github.com/seosh817/Flutter_CircularSeekBar/blob/hotfix/1.0.3/images/animations_bounceOut.gif?raw=true" width="300"/>
+
+
+### Dart code:
+
+Various animations can be applied to the SeekBar by changing the `curves` property.
+
+```dart
+CircularSeekBar(
+  width: double.infinity,
+  height: 250,
+  progress: _progress,
+  barWidth: 8,
+  startAngle: 45,
+  sweepAngle: 270,
+  strokeCap: StrokeCap.butt,
+  progressGradientColors: const [Colors.red, Colors.orange, Colors.yellow, Colors.green, Colors.blue, Colors.indigo, Colors.purple],
+  innerThumbRadius: 5,
+  innerThumbStrokeWidth: 3,
+  innerThumbColor: Colors.white,
+  outerThumbRadius: 5,
+  outerThumbStrokeWidth: 10,
+  outerThumbColor: Colors.blueAccent,
+  dashWidth: 1,
+  dashGap: 2,
+  animation: true,
+  curves: Curves.bounceOut,
+  valueNotifier: _valueNotifier,
+  child: Center(
+    child: ValueListenableBuilder(
+        valueListenable: _valueNotifier,
+        builder: (_, double value, __) => Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text('${value.round()}', style: kNotoSansBold16.copyWith(color: Colors.white)),
+            Text('progress', style: kNotoSansRegular14.copyWith(color: Colors.grey)),
+          ],
+        )),
+  ),
+)
+```
+
+# Installing
 
 ### 1. Depend on it
 
@@ -194,7 +252,7 @@ Add this to your package's `pubspec.yaml` file:
 
 ```yaml
 dependencies:
-  circular_seek_bar: ^1.0.0
+  circular_seek_bar: ^1.0.3
 ```
 
 or
@@ -254,7 +312,7 @@ You can customize the CircularSeekBar using the following properties:
 | interactive | `bool` | true | Set to true if you want to interact with TapDown to change the seekbar's progress.|
 | child | `Widget?` | null | This widget is placed on the seek bar.|
 
-## License
+# License
 ```
 MIT License
 
@@ -278,3 +336,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ```
+
+# Contribution
+Feel free to file an [issue](https://github.com/seosh817/Flutter_CircularSeekBar/issues) if you find a problem or make [pull requests](https://github.com/seosh817/Flutter_CircularSeekBar/pulls).<br>
+All contributions are welcome 😁
+
