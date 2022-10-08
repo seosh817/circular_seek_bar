@@ -21,7 +21,7 @@
   </a>
 </p><br>
 
-<p align="center">Circular seek bar package for flutter that supports customizable animations, dashes, and gradients.</p>
+<p align="center">Circular progress/seek bar package for flutter that supports customizable animations, dashes, and gradients.</p>
 
 # Getting Started
 - [Youtube Demo Video](#youtube-demo-video)
