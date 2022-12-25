@@ -22,3 +22,11 @@
 ## 1.0.3+1
 
 - Edit description
+
+## 1.0.3+2
+
+- Change GitHub workflow badge routes
+
+## 1.0.3+3
+
+- Change GitHub workflow badge routes
