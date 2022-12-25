@@ -6,12 +6,14 @@
     <img src="https://img.shields.io/badge/Platform-Flutter-02569B?logo=flutter"
       alt="Platform" />
   </a>
+
   <a href="https://pub.dartlang.org/packages/circular_seek_bar">
     <img src="https://img.shields.io/pub/v/circular_seek_bar.svg"
       alt="Pub Package" />
   </a>
-  <a href="https://github.com/seosh817/Flutter_CircularSeekBar/actions/workflows/main.yml">
-    <img src="https://img.shields.io/github/workflow/status/seosh817/Flutter_CircularSeekBar/main_workflow/release/1.0.0?logo=github"
+
+  <a href="https://github.com/seosh817/circular_seek_bar/actions/workflows/main.yml">
+    <img src="https://img.shields.io/github/actions/workflow/status/seosh817/circular_seek_bar/main.yml?branch=release/1.0.0&logo=github"
       alt="Build Status" />
   </a>
 
@@ -83,7 +85,7 @@ CircularSeekBar(
   height: 250,
   progress: _progress,
   barWidth: 8,
-  startAngle: 45,v
+  startAngle: 45,
   sweepAngle: 270,
   strokeCap: StrokeCap.round,
   progressGradientColors: const [Colors.red, Colors.orange, Colors.yellow, Colors.green, Colors.blue, Colors.indigo, Colors.purple],
