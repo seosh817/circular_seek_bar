@@ -437,10 +437,12 @@ class _SeekBarPainter extends CustomPainter {
 
       final Offset center = Offset(size.width / 2, size.height / 2);
       final double largerThumbWidth =
-          (outerThumbRadius / 2 + outerThumbStrokeWidth / 2) >= (innerThumbRadius / 2 + innerThumbStrokeWidth / 2)
+          (outerThumbRadius / 2 + outerThumbStrokeWidth / 2) >=
+                  (innerThumbRadius / 2 + innerThumbStrokeWidth / 2)
               ? (outerThumbRadius / 2 + outerThumbStrokeWidth / 2)
               : (innerThumbRadius / 2 + innerThumbStrokeWidth / 2);
-      final double seekBarMargin = largerThumbWidth >= (barWidth / 2) ? largerThumbWidth : barWidth / 2;
+      final double seekBarMargin =
+          largerThumbWidth >= (barWidth / 2) ? largerThumbWidth : barWidth / 2;
       final double radius = min(center.dx, center.dy) - seekBarMargin;
       double realStartAngle = startAngle + angleOffset;
 
@@ -458,7 +460,8 @@ class _SeekBarPainter extends CustomPainter {
           endAngle: sweepAngleRadian,
           tileMode: TileMode.mirror,
           colors: trackGradientColors,
-          transform: GradientRotation(startAngleWithOffsetRadian - asin((barWidth / 2) / radius)),
+          transform: GradientRotation(
+              startAngleWithOffsetRadian - asin((barWidth / 2) / radius)),
         );
         trackPaint.shader = trackGradient.createShader(rect);
       }
@@ -470,7 +473,8 @@ class _SeekBarPainter extends CustomPainter {
           endAngle: sweepAngleRadian,
           tileMode: TileMode.mirror,
           colors: progressGradientColors,
-          transform: GradientRotation(startAngleWithOffsetRadian - asin((barWidth / 2) / radius)),
+          transform: GradientRotation(
+              startAngleWithOffsetRadian - asin((barWidth / 2) / radius)),
         );
 
         progressPaint.shader = progressGradient.createShader(rect);
