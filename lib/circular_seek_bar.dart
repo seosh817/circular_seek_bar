@@ -437,10 +437,11 @@ class _SeekBarPainter extends CustomPainter {
 
       final Offset center = Offset(size.width / 2, size.height / 2);
       final double largerThumbWidth =
-          barWidth >= (outerThumbRadius + (outerThumbStrokeWidth / 2))
-              ? barWidth
-              : (outerThumbRadius + (outerThumbStrokeWidth / 2));
-      final double radius = min(center.dx, center.dy) - largerThumbWidth;
+          (outerThumbRadius / 2 + outerThumbStrokeWidth / 2) >= (innerThumbRadius / 2 + innerThumbStrokeWidth / 2)
+              ? (outerThumbRadius / 2 + outerThumbStrokeWidth / 2)
+              : (innerThumbRadius / 2 + innerThumbStrokeWidth / 2);
+      final double seekBarMargin = largerThumbWidth >= (barWidth / 2) ? largerThumbWidth : barWidth / 2;
+      final double radius = min(center.dx, center.dy) - seekBarMargin;
       double realStartAngle = startAngle + angleOffset;
 
       double startAngleWithOffsetRadian = _degreesToRadians(realStartAngle);
