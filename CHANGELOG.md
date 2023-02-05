@@ -30,3 +30,9 @@
 ## 1.0.3+3
 
 - Change GitHub workflow badge routes
+
+## 1.1.0
+
+- Modify the formula to get the radius of CircularSeekBar
+
+- Fix bug: Large barWidth with strokeCap round looks odd(#1)
