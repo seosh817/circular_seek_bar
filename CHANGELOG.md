@@ -36,3 +36,7 @@
 - Modify the formula to get the radius of CircularSeekBar
 
 - Fix bug: Large barWidth with strokeCap round looks odd(#1)
+
+## 1.1.0+1
+
+- Format dart code
