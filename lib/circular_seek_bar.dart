@@ -458,7 +458,7 @@ class _SeekBarPainter extends CustomPainter {
           endAngle: sweepAngleRadian,
           tileMode: TileMode.mirror,
           colors: trackGradientColors,
-          transform: GradientRotation(startAngleWithOffsetRadian - 0.1),
+          transform: GradientRotation(startAngleWithOffsetRadian - asin((barWidth / 2) / radius)),
         );
         trackPaint.shader = trackGradient.createShader(rect);
       }
@@ -470,7 +470,7 @@ class _SeekBarPainter extends CustomPainter {
           endAngle: sweepAngleRadian,
           tileMode: TileMode.mirror,
           colors: progressGradientColors,
-          transform: GradientRotation(startAngleWithOffsetRadian - 0.1),
+          transform: GradientRotation(startAngleWithOffsetRadian - asin((barWidth / 2) / radius)),
         );
 
         progressPaint.shader = progressGradient.createShader(rect);
