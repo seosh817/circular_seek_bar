@@ -40,3 +40,7 @@
 ## 1.1.0+1
 
 - Format dart code
+
+## 1.1.0+2
+
+- Update for pub score
