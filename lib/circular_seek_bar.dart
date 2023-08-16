@@ -582,6 +582,21 @@ class _SeekBarPainter extends CustomPainter {
 
         Offset thumbCenter = Offset(thumbX, thumbY);
 
+        double startX =
+            rect.center.dx + cos(startAngleWithOffsetRadian) * radius;
+        double startY =
+            rect.center.dy + sin(startAngleWithOffsetRadian) * radius;
+
+        // Draw a marker at the starting point
+        canvas.drawCircle(
+            Offset(startX, startY),
+            8.0,
+            Paint()
+              ..color = Colors.white
+              ..style = PaintingStyle.fill
+              ..strokeCap = StrokeCap.round
+              ..strokeWidth = outerThumbStrokeWidth);
+
         canvas.drawCircle(
             thumbCenter,
             outerThumbRadius,
