@@ -44,3 +44,7 @@
 ## 1.1.0+2
 
 - Update for pub score
+
+## 1.1.1
+
+- Upgrade supported flutter and dart version 
